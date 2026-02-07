@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
 import { User, WorkRequest, Project, AttendanceRecord } from '../models/model';
-import { BehaviorSubject, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class Storage {
-  private readonly DATA_KEY = 'EMS_DATA_V1';
+  private readonly DATA_KEY = 'DataBase';
 
-  // Seed Data
   private initialData = {
     users: [
-      { id: 1, name: 'Alice HR', email: 'hr@ems.com', role: 'HR', department: 'Operations', designation: 'HR Manager', joinDate: new Date(), leaveBalance: 20 },
-      { id: 2, name: 'Bob Dev', email: 'user@ems.com', role: 'USER', department: 'Engineering', designation: 'Frontend Dev', joinDate: new Date(), leaveBalance: 12 }
+      { id: 1, name: 'HR', email: 'hr@test.com', role: 'HR', department: 'Operations', designation: 'HR Manager', joinDate: new Date(), leaveBalance: 20 },
+      { id: 2, name: 'Manu', email: 'manu@test.com', role: 'USER', department: 'Backend', designation: 'Backend Developer', joinDate: new Date(), leaveBalance: 12 }
     ],
     requests: [],
     projects: [
-      { id: 101, name: 'Project Phoenix', description: 'Revamping the legacy UI', status: 'In Progress', teamMembers: [2] },
-      { id: 102, name: 'Gateway API', description: 'Backend microservices', status: 'Delayed', teamMembers: [] }
+      { id: 101, name: 'Login Module', description: 'Adding Email verification', status: 'In Progress', teamMembers: [2] },
+      { id: 102, name: 'Gateway API', description: 'Backend microservices', status: 'Completed', teamMembers: [2] }
     ],
     attendance: [
       { userId: 2, date: '2023-10-25', status: 'Present', checkIn: '09:00', checkOut: '18:00' },
@@ -42,7 +40,6 @@ export class Storage {
     localStorage.setItem(this.DATA_KEY, JSON.stringify(data));
   }
 
-  // --- User Operations ---
   login(email: string): User | undefined {
     const db = this.getDb();
     return db.users.find((u: User) => u.email === email);
@@ -53,13 +50,12 @@ export class Storage {
     return db.users.find((u: User) => u.id === id);
   }
 
-  // --- Request Operations ---
   getRequests(userId?: number): WorkRequest[] {
     const db = this.getDb();
     if (userId) {
       return db.requests.filter((r: WorkRequest) => r.userId === userId);
     }
-    return db.requests; // Return all for HR
+    return db.requests;
   }
 
   createRequest(req: Partial<WorkRequest>) {
@@ -83,7 +79,6 @@ export class Storage {
     }
   }
 
-  // --- Project & Attendance ---
   getUserProjects(userId: number): Project[] {
     const db = this.getDb();
     return db.projects.filter((p: Project) => p.teamMembers.includes(userId));

@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="card">
+    <h2>Employee Management System Login</h2>
+    <p>Choose your role:</p>
+
+    <button (click)="login('hr@test.com')" class="btn-hr">
+      Login as HR (HR)
+    </button>
+
+    <button (click)="login('manu@test.com')" class="btn-emp">
+      Login as Employee (Manu)
+    </button>
+
+    <div *ngIf="error" class="error">
+      {{ error }}
+    </div>
+  </div>
+</div>

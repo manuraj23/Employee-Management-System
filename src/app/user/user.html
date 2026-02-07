@@ -1,0 +1,91 @@
+<div class="dashboard">
+  <header>
+    <h1>Welcome, {{ user?.name }}</h1>
+    <button (click)="logout()" class="logout-btn">Logout</button>
+  </header>
+
+  <div class="grid-container">
+
+    <div class="card profile">
+      <h3>My Profile</h3>
+      <p><strong>Dept:</strong> {{ user?.department }}</p>
+      <p><strong>Role:</strong> {{ user?.designation }}</p>
+      <p><strong>Leave Balance:</strong> {{ user?.leaveBalance }} Days</p>
+    </div>
+
+    <div class="card attendance">
+      <h3>Recent Attendance</h3>
+      <table>
+        <tr *ngFor="let rec of attendance">
+          <td>{{ rec.date }}</td>
+          <td>
+            <span class="badge success">{{ rec.status }}</span>
+          </td>
+          <td>{{ rec.checkIn }} - {{ rec.checkOut }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card projects">
+      <h3>Assigned Projects</h3>
+      <div *ngFor="let p of projects" class="project-item">
+        <strong>{{ p.name }}</strong>
+        <span class="badge info">{{ p.status }}</span>
+        <p>{{ p.description }}</p>
+      </div>
+    </div>
+
+    <div class="card apply-form">
+      <h3>Apply for Leave / WFH</h3>
+
+      <select [(ngModel)]="newRequest.type">
+        <option value="LEAVE">Leave</option>
+        <option value="WFH">Work From Home</option>
+      </select>
+
+      <input type="date" [(ngModel)]="newRequest.startDate">
+      <input type="date" [(ngModel)]="newRequest.endDate">
+      <input type="text" [(ngModel)]="newRequest.reason" placeholder="Reason">
+
+      <button (click)="submitRequest()">Submit Request</button>
+    </div>
+
+    <div class="card history full-width">
+      <h3>My Request History</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Dates</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let r of myRequests">
+            <td>{{ r.type }}</td>
+            <td>{{ r.startDate }} → {{ r.endDate }}</td>
+            <td>{{ r.reason }}</td>
+            <td>
+              <span [class]="'badge ' + r.status.toLowerCase()">
+                {{ r.status }}
+              </span>
+            </td>
+            <td>
+              <button
+                *ngIf="r.status === 'PENDING'"
+                (click)="cancelRequest(r.id)"
+                class="btn-cancel">
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
