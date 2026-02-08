@@ -16,7 +16,7 @@ export class Login {
 
   login(email: string) {
     if (!this.auth.login(email)) {
-      this.error = 'User not found in mock DB';
+      this.error = 'User not found';
     }
   }
 }
