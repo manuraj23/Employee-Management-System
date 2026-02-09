@@ -14,7 +14,7 @@ import { WorkRequest } from '../models/model';
 export class Hr implements OnInit {
   requests: WorkRequest[] = [];
 
-  constructor(private storage: Storage, private auth: Auth) {}
+  constructor(private storage: Storage, private auth: Auth) { }
 
   ngOnInit() {
     this.refresh();
@@ -32,7 +32,13 @@ export class Hr implements OnInit {
     this.requests = this.storage.getRequests().sort((a, b) => {
       const aPending = a.status === 'PENDING';
       const bPending = b.status === 'PENDING';
-      return aPending === bPending ? 0 : aPending ? -1 : 1;
+      if (aPending === bPending) {
+        return 0;
+      } else if (aPending) {
+        return -1;
+      } else {
+        return 1;
+      }
     });
   }
 
