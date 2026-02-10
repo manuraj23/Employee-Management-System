@@ -20,6 +20,7 @@ export class Hr implements OnInit {
     this.refresh();
   }
 
+  
   get pendingCount() {
     return this.requests.filter(r => r.status === 'PENDING').length;
   }
